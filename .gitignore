@@ -1,0 +1,17 @@
+# dependencies — installed by npm on each machine / on Vercel, never committed
+node_modules/
+
+# build output — Vercel runs `npm run build` itself
+dist/
+
+# logs and local env
+npm-debug.log*
+*.log
+.env
+.env.local
+.env.*.local
+
+# editor / OS
+.vscode/
+.DS_Store
+Thumbs.db

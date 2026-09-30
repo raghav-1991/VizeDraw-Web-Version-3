@@ -1,0 +1,84 @@
+/* VizeDraw — design tokens (dark).
+   One brand colour (#4ebabd), a cool true-dark base and two glass strengths.
+   Change these before touching component styles. */
+:root {
+  color-scheme: dark;
+  /* Base */
+  --bg: #040708;
+  --bg-rgb: 4, 7, 8;
+  --bg-raise: #0c1415;
+  --bg-deep: #020404;
+
+  /* Text */
+  --text: #e9f2f2;
+  --text-soft: #b9cacb;
+  --muted: #8ea3a5;
+  --faint: #5f7476;
+
+  /* Brand */
+  --brand: #4ebabd;
+  --brand-bright: #7fd6d8;
+  --brand-ink: #03191a;
+  --brand-rgb: 78, 186, 189;
+  --ice: #c9f1f1;
+  --star-rgb: 127, 214, 216; /* background shooting stars */
+
+  /* Tint channels — glass fills and hairlines */
+  --tint-rgb: 222, 247, 248;
+  --line-rgb: 190, 236, 237;
+
+  /* Recessed wells, raised surfaces, drop shadows, overlay scrim */
+  --well: rgba(0, 0, 0, 0.3);
+  --well-focus: rgba(0, 0, 0, 0.45);
+  --surface: linear-gradient(180deg, rgba(20, 32, 34, 0.94), rgba(8, 14, 15, 0.96));
+  --drop: rgba(0, 0, 0, 0.9);
+  --scrim: rgba(1, 4, 5, 0.7);
+
+  /* Status */
+  --warn: #f0c987;
+  --warn-rgb: 240, 201, 135;
+  --danger: #e59a8c;
+  --danger-soft: #eeb0a4;
+
+  /* Glass */
+  --glass: linear-gradient(180deg, rgba(222, 247, 248, 0.055), rgba(222, 247, 248, 0.018));
+  --glass-flat: rgba(222, 247, 248, 0.03);
+  --glass-strong: linear-gradient(180deg, rgba(222, 247, 248, 0.085), rgba(222, 247, 248, 0.03));
+  --line: rgba(190, 236, 237, 0.1);
+  --line-strong: rgba(190, 236, 237, 0.2);
+  --highlight: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --blur: blur(20px) saturate(150%);
+  --shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.9), 0 12px 24px -12px rgba(0, 0, 0, 0.6);
+
+  /* Drawing (technical line work) */
+  --draw-line: rgba(201, 241, 241, 0.72);
+  --draw-dim: rgba(142, 196, 198, 0.62);
+  --draw-center: rgba(142, 196, 198, 0.35);
+
+  /* Shape — three radii by hierarchy: frames, panels, controls */
+  --r-frame: 22px;
+  --r-panel: 14px;
+  --r-control: 10px;
+
+  /* Type */
+  --sans: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* Layout */
+  --container: 1240px;
+  --gutter: 48px;
+  --header-h: 76px;
+  --section: 128px;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (max-width: 1180px) {
+  :root { --gutter: 32px; --section: 104px; }
+}
+@media (max-width: 950px) {
+  :root { --section: 84px; --header-h: 68px; }
+}
+@media (max-width: 600px) {
+  :root { --gutter: 20px; --section: 64px; --r-frame: 18px; }
+}

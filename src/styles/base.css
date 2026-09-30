@@ -1,0 +1,134 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 32px);
+  -webkit-text-size-adjust: 100%;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  /* no background here: html paints the base colour, and a body background would cover the fixed z-index:-1 backdrop */
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection { background: rgba(var(--brand-rgb), 0.35); color: #fff; }
+
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+button, a { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+
+p { margin: 0 0 1.1em; color: var(--muted); }
+p:last-child { margin-bottom: 0; }
+strong { font-weight: 600; color: var(--text); }
+
+h1, h2, h3, h4 {
+  margin: 0;
+  color: var(--text);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+h1 { font-size: clamp(2.55rem, 5vw, 4.6rem); }
+h2 { font-size: clamp(2rem, 3.3vw, 3.15rem); line-height: 1.08; }
+h3 { font-size: 1.3rem; line-height: 1.25; letter-spacing: -0.02em; }
+
+:focus-visible { outline: 2px solid var(--brand-bright); outline-offset: 4px; border-radius: 4px; }
+
+.container { width: min(var(--container), calc(100% - var(--gutter) * 2)); margin-inline: auto; }
+.section { padding-block: var(--section); position: relative; }
+.section--tight-top { padding-top: 24px; }
+
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+main:focus { outline: none; }
+
+.skip-link {
+  position: fixed; left: 16px; top: -80px; z-index: 200;
+  background: var(--brand); color: var(--brand-ink); padding: 12px 18px; border-radius: var(--r-control); font-weight: 600;
+}
+.skip-link:focus { top: 12px; }
+
+/* Page-wide backdrop (retro): 45° drafting stripes that drift with scroll, dot-matrix edges, a streak canvas,
+   scanlines and a vignette, over two still colour fields for the glass to pick up. */
+.backdrop { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; background: var(--bg); }
+.backdrop__stripes {
+  position: absolute; inset: -16px 0;
+  background: repeating-linear-gradient(45deg, rgba(var(--tint-rgb), 0.028) 0 4px, transparent 4px 8px);
+  transform: translate3d(0, var(--field, 0px), 0);
+  mask-image: linear-gradient(180deg, #000, rgba(0, 0, 0, 0.45) 80%);
+  -webkit-mask-image: linear-gradient(180deg, #000, rgba(0, 0, 0, 0.45) 80%);
+}
+.backdrop__dots {
+  position: absolute; inset: -2px;
+  background-image: radial-gradient(circle at 1px 1px, rgba(var(--tint-rgb), 0.12) 1px, transparent 0);
+  background-size: 14px 14px;
+  mask-image: linear-gradient(90deg, #000 0 10%, transparent 20% 80%, #000 90% 100%);
+  -webkit-mask-image: linear-gradient(90deg, #000 0 10%, transparent 20% 80%, #000 90% 100%);
+}
+.backdrop__streaks {
+  position: absolute; left: 0; top: -16px; width: 100%; height: calc(100% + 32px); display: block;
+  transform: translate3d(0, var(--field, 0px), 0); animation: stars-in 1.6s var(--ease) 0.6s both;
+}
+@keyframes stars-in { from { opacity: 0; } }
+.backdrop__scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.28) 0 1px, transparent 1px 3px); }
+.backdrop__vignette { position: absolute; inset: 0; background: radial-gradient(120% 90% at 50% 40%, transparent 40%, rgba(2, 4, 5, 0.7) 100%); }
+.backdrop__field { position: absolute; border-radius: 50%; filter: blur(90px); }
+.backdrop__field--a { width: 60vw; height: 42vw; left: -18vw; top: -22vw; background: rgba(var(--brand-rgb), 0.13); }
+.backdrop__field--b { width: 48vw; height: 40vw; right: -20vw; top: 18vh; background: rgba(40, 92, 120, 0.16); }
+.backdrop__noise {
+  position: absolute; inset: 0; opacity: 0.05; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* HUD: scroll progress along the top edge and a mono readout in the corner. */
+.hud { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
+.hud__bar {
+  position: absolute; left: 0; top: 0; width: 100%; height: 2px; background: var(--brand);
+  transform: scaleX(var(--scroll, 0)); transform-origin: left center; box-shadow: 0 0 10px rgba(var(--brand-rgb), 0.6);
+}
+/* readouts run vertically in the side gutters so they never sit on top of content */
+.hud__rail { font-family: var(--mono); font-size: 10px; letter-spacing: 0.28em; color: var(--faint); }
+.hud__rail > span { position: absolute; bottom: 24px; writing-mode: vertical-rl; white-space: nowrap; }
+.hud__rail > span:first-child { left: 14px; transform: rotate(180deg); }
+.hud__rail > span:last-child { right: 14px; }
+.hud__rail em { font-style: normal; color: var(--brand); }
+@media (max-width: 1320px) { .hud__rail { display: none; } }
+@media (max-width: 600px) { .backdrop__dots, .backdrop__scan { display: none; } }
+
+/* Scroll reveal — one style used everywhere; content is visible without JS and with reduced motion. */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); transition-delay: var(--delay, 0ms); }
+.reveal.is-in { opacity: 1; transform: none; }
+.no-js .reveal { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+  h1 { font-size: clamp(2.3rem, 10vw, 2.8rem); }
+  h2 { font-size: clamp(1.85rem, 8vw, 2.2rem); }
+}
+
+@media print {
+  .site-header, .site-footer, .backdrop, .hud, dialog { display: none !important; }
+  body { background: #fff; color: #000; }
+}
